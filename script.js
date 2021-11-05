@@ -1,6 +1,6 @@
 'use strict';
 
-// BANK APP
+// BANKIST APP
 
 // Data for application:
 const account1 = {

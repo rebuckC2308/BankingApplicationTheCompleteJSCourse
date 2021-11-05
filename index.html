@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="shortcut icon" type="image/png" href="/bankIcon.png" />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+    <title>Banking Application</title>
+  </head>
+
+  <body>
+    <!--Top navigation-->
+    <nav>
+      <p class="welcomeMessage">Welcome to the Banking App! Log in to begin</p>
+      <img src="bankIcon.png" alt="BankLogo" class="logo" />
+      <form class="login__form">
+        <input
+          type="text"
+          placeholder="Username"
+          class="login__input login__input--user"
+        />
+        <!--Text: 'Enter Username' goes below-->
+
+        <input
+          type="text"
+          placeholder="4 Digit PIN"
+          maxlength="4"
+          class="login__input login__input--pin"
+        />
+        <!--Text: 'Enter Your 4 Digit PIN' goes here-->
+
+        <button class="login__btn">Log in</button>
+      </form>
+    </nav>
+
+    <main class="app">
+      <!--Current Balance-->
+      <div class="balance">
+        <div>
+          <p class="current__balance__label">Your Current Balance</p>
+          <p class="current__balance__date">
+            As of <span class="current__date">11/4/2021</span>
+          </p>
+        </div>
+        <p class="current__balance">$00.00</p>
+      </div>
+    </main>
+  </body>
+</html>
