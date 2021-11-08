@@ -7,7 +7,7 @@
     <link rel="shortcut icon" type="image/png" href="/bankIcon.png" />
 
     <link
-      href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Raleway&display=swap"
       rel="stylesheet"
     />
 
@@ -18,27 +18,32 @@
   <body>
     <!--Top navigation-->
     <nav>
-      <p class="welcomeMessage">Welcome to the Banking App! Log in to begin</p>
+      <p class="welcomeMessage">Welcome to My Money Transfer! Log in to begin</p>
       <img src="bankIcon.png" alt="BankLogo" class="logo" />
-      <form class="login__form">
-        <input
-          type="text"
-          placeholder="Username"
-          class="login__input login__input--user"
-        />
-        <!--Text: 'Enter Username' goes below-->
-        <Text> Enter Username </Text>
+      <div class="login__container">
+          <form class="login__form">
+            <input
+              type="text"
+              placeholder="Enter Username"
+              class="login__input login__input--user"
+            />
+            <!--Text: 'Enter Username' goes below-->
+            
+            <input
+            type="text"
+            placeholder="Enter 4 Digit PIN"
+            maxlength="4"
+            class="login__input login__input--pin"
+            />
+            <!--Text: 'Enter Your 4 Digit PIN' goes here-->
+            <button class="login__btn">Log in</button>
+            <!-- <div class="login__inputText">
+                <Text id="login__username"> Enter Username </Text>
+                <Text>Enter Your PIN</Text>
+            </div> -->
 
-        <input
-          type="text"
-          placeholder="4 Digit PIN"
-          maxlength="4"
-          class="login__input login__input--pin"
-        />
-        <!--Text: 'Enter Your 4 Digit PIN' goes here-->
-        <Text>Enter Your PIN</Text>
+      </div>
 
-        <button class="login__btn">Log in</button>
       </form>
     </nav>
 

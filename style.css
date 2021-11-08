@@ -1,0 +1,65 @@
+/*
+font-family: 'Raleway', sans-serif;
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 65%;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Raleway', sans-serif;
+  color: #232931;
+  background-color: #eeeeee;
+  height: 100vh;
+  padding: 2rem;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.welcomeMessage {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.logo {
+  height: 8rem;
+}
+
+.login__container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.login__form {
+  display: flex;
+}
+
+.login__input {
+  border: none;
+  padding: 0.5rem 2rem;
+  font-size: 1.3rem;
+  font-family: inherit;
+  text-align: center;
+  width: 18rem;
+  border-radius: 7rem;
+  margin-right: 1rem;
+  color: inherit;
+  border: 1px solid #2a3d4f;
+  transition: all 0.3s;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+  opacity: 0.8;
+}
