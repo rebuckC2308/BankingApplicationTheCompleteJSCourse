@@ -24,23 +24,19 @@
           <form class="login__form">
             <input
               type="text"
-              placeholder="Enter Username"
+              placeholder="Username"
               class="login__input login__input--user"
             />
-            <!--Text: 'Enter Username' goes below-->
-            
             <input
             type="text"
-            placeholder="Enter 4 Digit PIN"
+            placeholder="PIN"
             maxlength="4"
             class="login__input login__input--pin"
             />
-            <!--Text: 'Enter Your 4 Digit PIN' goes here-->
             <button class="login__btn">Log in</button>
-            <!-- <div class="login__inputText">
-                <Text id="login__username"> Enter Username </Text>
-                <Text>Enter Your PIN</Text>
-            </div> -->
+            <label class="login__label">Enter Your Username</label>
+            <label class="login__label">Enter Your 4 Digit PIN</label>
+
 
       </div>
 
@@ -56,7 +52,7 @@
             As of <span class="current__date">11/4/2021</span>
           </p>
         </div>
-        <p class="current__balance">$00.00</p>
+        <p class="current__balance__value">$00.00</p>
       </div>
 
       <!--Transactions-->
@@ -88,12 +84,22 @@
         <button class="btn--sort">&downarrow; Sort</button>
       </div>
 
+        <!--Loan Request-->
+      <div class="feature feature--loan">
+        <h2>Request a Loan</h2>
+        <form class="form form--loan">
+          <input type="number" placeholder="--" class="form__input form__input--loan-amount" />
+          <button class="form__btn form__btn--loan">Request Loan</button>
+          <label class="form__label form__label--loan">Amount</label>
+        </form>
+      </div>
+        
       <!--Account Tranfers-->
       <div class="feature feature--transfer">
         <h2>Transfers</h2>
         <form class="form form--transfer">
-          <input type="text" class="form__input form__input--to" />
-          <input type="number" class="form__input form__input--amount" />
+          <input type="text" placeholder="Username" class="form__input form__input--to" />
+          <input type="number" placeholder="--" class="form__input form__input--amount" />
           <button class="form__btn form__btn--transfer">
             Initiate Transfer
           </button>
@@ -102,22 +108,14 @@
         </form>
       </div>
 
-      <!--Loan Request-->
-      <div class="feature feature--loan">
-        <h2>Request a Loan</h2>
-        <form class="form form--loan">
-          <input type="number" class="form__input form__input--loan-amount" />
-          <button class="form__btn form__btn--loan">Request Loan</button>
-          <label class="form__label form__label--loan">Amount</label>
-        </form>
-      </div>
 
       <div class="feature feature--close">
         <h2>Close Your Account</h2>
         <form class="form form--close">
-          <input type="text" class="form__input form__input--user" />
+          <input type="text" placeholder="Username" class="form__input form__input--user" />
           <input
             type="password"
+            placeholder="PIN"
             maxlength="8"
             class="form__input form__input--pin"
           />

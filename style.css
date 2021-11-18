@@ -14,7 +14,7 @@ html {
 
 body {
   font-family: 'Raleway', sans-serif;
-  color: #232931;
+  color: #2a3d4f;
   background-color: #eeeeee;
   height: 100vh;
   padding: 2rem;
@@ -27,9 +27,19 @@ nav {
   padding: 0 2rem;
 }
 
+/* Add a hover effect for buttons */
+button:hover,
+button:focus {
+  opacity: 0.8;
+  outline: none;
+  color: #00a388;
+}
+
+/* TOP NAV */
 .welcomeMessage {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 600;
+  color: #2a3d4f;
 }
 
 .logo {
@@ -42,7 +52,15 @@ nav {
 }
 
 .login__form {
-  display: flex;
+  display: grid;
+  grid-template-columns: 2.5fr 2.5fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 0.4rem 1rem;
+}
+
+.login__label {
+  font-size: 1.3rem;
+  text-align: center;
 }
 
 .login__input {
@@ -53,13 +71,225 @@ nav {
   text-align: center;
   width: 18rem;
   border-radius: 7rem;
-  margin-right: 1rem;
   color: inherit;
   border: 1px solid #2a3d4f;
   transition: all 0.3s;
 }
 
-/* Add a hover effect for buttons */
-button:hover {
+.login__input:focus {
+  outline: none;
+  border: 1px solid #00a388;
+}
+
+.login__input::placeholder {
+  color: #2a3d4f;
+}
+
+.login__btn {
+  border: none;
+  font-size: 2rem;
+  color: #2a3d4f;
+  transition: all 0.3s;
+}
+
+/* MAIN */
+.app {
+  position: relative;
+  max-width: 100rem;
+  margin: 4rem auto;
+  display: grid;
+  grid-template-columns: 4fr 3fr;
+  grid-template-rows: auto repeat(3, 15rem) auto;
+  gap: 2rem;
+  opacity: 100;
+  transition: all 1s;
+}
+
+.balance {
+  grid-column: 1 / span 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.current__balance__label {
+  font-size: 2.5rem;
+  font-weight: 500;
+  margin-bottom: -0.1rem;
+}
+
+.current__balance__date {
+  font-size: 1.4rem;
+  color: #4b6981;
+}
+
+.current__balance__value {
+  font-size: 4.5rem;
+  font-weight: 500;
+}
+
+.transactions {
+  grid-row: 2 / span 3;
+  background-color: #fff;
+  border-radius: 1rem;
+  overflow: scroll;
+}
+
+.transactions__row {
+  padding: 2.25rem 4rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #00a388;
+}
+
+.transactions__type {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #eee;
+  padding: 0.1rem 1rem;
+  border-radius: 10rem;
+  margin-right: 2rem;
+}
+
+.transactions__date {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #4b6981;
+}
+
+.transactions__type--deposit {
+  background-color: #46cc58;
+}
+
+.transactions__type--withdrawal {
+  background-color: #fa4659;
+}
+
+.transactions__value {
+  font-size: 1.8rem;
+  margin-left: auto;
+}
+
+/* SUMMARY */
+.summary {
+  grid-row: 5 / 6;
+  display: flex;
+  align-items: baseline;
+  padding: 0 0.5rem;
+}
+
+.summary__label {
+  font-size: 1.3rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-right: 1rem;
+}
+
+.summary__value {
+  font-size: 2.5rem;
+  margin-right: 2.5rem;
+}
+
+.summary__value--in,
+.summary__value--interest {
+  color: #46cc58;
+}
+
+.summary__value--out {
+  color: #fa4659;
+}
+
+.btn--sort {
+  margin-left: auto;
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* FEATURES */
+.feature {
+  border-radius: 1rem;
+  padding: 3rem 4rem;
+  color: #333;
+}
+
+.feature--transfer {
+  background-color: #fccb4f;
+}
+
+.feature--loan {
+  background-color: #46cc58;
+}
+
+.feature--close {
+  background-color: #fa4659;
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #070d2c;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 2.25fr 2.25fr 2.5fr;
+  grid-template-rows: auto auto;
+  gap: 0.4rem 1rem;
+}
+
+.form.form--loan {
+  grid-template-columns: 2.5fr 2.5fr 2fr;
+}
+.form__label--loan {
+  grid-row: 2;
+}
+
+.form__input {
+  width: 100%;
+  border: none;
+  background-color: #ffffff66;
+  font-family: inherit;
+  font-size: 1.5rem;
+  text-align: center;
+  color: inherit;
+  padding: 0.3rem 1rem;
+  border-radius: 0.7rem;
+  transition: all 0.3s;
+}
+
+.form__input:focus {
+  outline: none;
+  background-color: #ffffffcc;
+}
+
+.form__label {
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.form__btn {
+  border: none;
+  font-size: 1.4rem;
+  color: #2a3d4f;
+  background-color: #ffffff66;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 0.7rem;
+}
+
+.form__btn:focus {
   opacity: 0.8;
+  outline: none;
+  color: #2a3d4f;
+}
+
+.form__input::placeholder {
+  color: #2a3d4f;
 }
