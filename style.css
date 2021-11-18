@@ -90,6 +90,7 @@ button:focus {
   font-size: 2rem;
   color: #2a3d4f;
   transition: all 0.3s;
+  cursor: pointer;
 }
 
 /* MAIN */
@@ -101,7 +102,7 @@ button:focus {
   grid-template-columns: 4fr 3fr;
   grid-template-rows: auto repeat(3, 15rem) auto;
   gap: 2rem;
-  opacity: 100;
+  opacity: 0;
   transition: all 1s;
 }
 
@@ -140,7 +141,7 @@ button:focus {
   padding: 2.25rem 4rem;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #00a388;
+  border-bottom: 1px solid #2a3d4f;
 }
 
 .transactions__type {
@@ -189,8 +190,8 @@ button:focus {
 }
 
 .summary__value {
-  font-size: 2.5rem;
-  margin-right: 2.5rem;
+  font-size: 2.2rem;
+  margin-right: 2.4rem;
 }
 
 .summary__value--in,
