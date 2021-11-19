@@ -65,11 +65,17 @@ const inputTransferAmount = document.querySelector(
 const inputCloseUsername = document.querySelector('.form__input--close-user');
 const inputClosePIN = document.querySelector('.form__input--close-pin');
 
+//sorting transactions:
+//add a sort parameter inside our displayTransactions function w/ default value = false
 //displaying account transactions:
-const displayTransactions = account => {
+const displayTransactions = (transactions, sort = false) => {
   containerTransactions.innerHTML = '';
+
+  const sortTransactions = sort
+    ? transactions.slice().sort((a, b) => a - b)
+    : transactions;
   //empty the <div> that contains all the transactions so we don't have to change any hard coded HTML
-  account.transactions.forEach((mov, i) => {
+  sortTransactions.forEach((mov, i) => {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
     const html = `<div class="transactions__row">
@@ -79,51 +85,52 @@ const displayTransactions = account => {
         <div class="transactions__date">1 day ago</div>
         <div class="transactions__value">${mov < 0 ? '-' : ''} $${Math.abs(
       mov
-    )}</div>
+    ).toFixed(2)}</div>
             </div>`;
     containerTransactions.insertAdjacentHTML('afterbegin', html);
   });
 };
 
+//DRY CODE For finding deposits using filter function:
+const deposits = transaction => transaction > 0;
+
 //Caluclate the Account Summary:
 const calculateAccoutSummary = function (account) {
   //Calculate total number of deposits
   const income = account.transactions
-    .filter(transaction => transaction > 0)
+    .filter(deposits)
     .reduce((acc, transaction) => acc + transaction, 0);
-  labelSumIn.textContent = `$${(Math.round(income * 100) / 100).toFixed(2)}`;
+  labelSumIn.textContent = `$${income.toFixed(2)}`;
   //Calculate total number of withdrawal
   const debits = account.transactions
     .filter(transaction => transaction < 0)
     .reduce((acc, transaction) => acc + transaction, 0);
-  labelSumOut.textContent = `- $${(
-    Math.round(Math.abs(debits) * 100) / 100
-  ).toFixed(2)}`;
+  labelSumOut.textContent = `- $${Math.abs(debits).toFixed(2)}`;
 
   //calculate total interest accumulated
   const interest = account.transactions
-    .filter(transaction => transaction > 0)
+    .filter(deposits)
     .map(deposit => (deposit * account.interestRate) / 100)
     .filter(int => int >= 1)
     .reduce((acc, int) => acc + int, 0);
-  labelSumInt.textContent = `$${(Math.round(interest * 100) / 100).toFixed(2)}`;
+  labelSumInt.textContent = `$${interest.toFixed(2)}`;
 };
 
 //Calculate the TOTAL BALANCE OF ACCOUNT
-const calculateTotalBalance = function (account) {
-  const balance = account.transactions.reduce(
+const calculateAndDisplayBalance = function (account) {
+  account.balance = account.transactions.reduce(
     (acc, transaction) => acc + transaction,
     0
   );
 
-  labelBalance.textContent = `$${(Math.round(balance * 100) / 100).toFixed(2)}`;
+  labelBalance.textContent = `$${account.balance.toFixed(2)}`;
 };
 
 //Update the UI:
-const updateUI = function (currentUser) {
-  displayTransactions(currentUser);
-  calculateAccoutSummary(currentUser);
-  calculateTotalBalance(currentUser);
+const updateUI = function (account) {
+  displayTransactions(account.transactions);
+  calculateAccoutSummary(account);
+  calculateAndDisplayBalance(account);
 };
 
 //creating usernames for each account based on the name of the owner of the account:
@@ -150,7 +157,7 @@ btnLogin.addEventListener('click', function (e) {
   currentAccount = accounts.find(
     acc => acc.username === inputLoginUsername.value
   );
-  if (currentAccount?.pin === Number(inputLoginPIN.value)) {
+  if (currentAccount?.pin === +inputLoginPIN.value) {
     labelWelcome.textContent = `Welcome back, ${
       currentAccount.owner.split(' ')[0]
     }.`;
@@ -164,4 +171,88 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginPIN.blur();
     btnLogin.blur();
   }
+});
+
+//LOAN REQUEST:
+//Loan Feature RULE: the bank only grants loans if there is at least 1 deposit with at least 10% of the requested loan amount:
+
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const loanAmount = Math.floor(inputLoanAmount.value);
+
+  if (
+    currentAccount.transactions.some(
+      transaction => transaction >= loanAmount * 0.1
+    ) &&
+    loanAmount > 0
+  ) {
+    currentAccount.transactions.push(loanAmount);
+
+    updateUI(currentAccount);
+  }
+
+  inputLoanAmount.value = '';
+  inputLoanAmount.blur();
+});
+
+//IMPLEMENTING TRANSFERS BETWEEN ACCOUNTS:
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = +inputTransferAmount.value;
+  const accountRec = accounts.find(
+    account => account.username === inputTransferTo.value
+  );
+
+  inputTransferAmount.value = inputTransferTo.value = '';
+  inputTransferAmount.blur();
+  inputTransferTo.blur();
+
+  //must validate the amount and receiving account: 4 conditions
+  if (
+    amount > 0 &&
+    currentAccount.balance >= amount &&
+    accountRec?.username != currentAccount.username &&
+    accountRec
+  ) {
+    //transfer funds
+    currentAccount.transactions.push(-amount);
+    accountRec.transactions.push(amount);
+    //update the UI
+    updateUI(currentAccount);
+  }
+});
+
+//CLOSE THE ACCOUNT:
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    +inputClosePIN.value === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+
+    accounts.splice(index, 1);
+
+    containerApp.style.opacity = 0;
+  }
+
+  inputClosePIN.value = inputCloseUsername.value = '';
+  inputClosePIN.blur();
+  inputCloseUsername.blur();
+});
+
+//CLICKING THE SORT BUTTON:
+
+let sortedState = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayTransactions(currentAccount.transactions, !sortedState);
+  sortedState = !sortedState;
+
+  btnSort.blur();
 });
