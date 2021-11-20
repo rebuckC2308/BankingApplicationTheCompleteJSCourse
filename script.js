@@ -8,6 +8,19 @@ const account1 = {
   transactions: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
   pin: 1111,
+
+  movementsDates: [
+    '2021-11-18T21:31:17.178Z',
+    '2021-12-23T07:42:02.383Z',
+    '2021-01-28T09:15:04.904Z',
+    '2021-04-01T10:17:24.185Z',
+    '2021-05-08T14:11:59.604Z',
+    '2021-05-27T17:01:17.194Z',
+    '2021-07-11T23:36:17.929Z',
+    '2021-07-12T10:51:36.790Z',
+  ],
+  currency: 'USD',
+  locale: 'en-US',
 };
 
 const account2 = {
@@ -15,6 +28,19 @@ const account2 = {
   transactions: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
+
+  movementsDates: [
+    '2021-11-01T13:15:33.035Z',
+    '2021-12-25T06:04:23.907Z',
+    '2021-11-30T09:48:16.867Z',
+    '2021-01-25T14:18:46.235Z',
+    '2021-02-05T16:33:06.386Z',
+    '2021-04-10T14:43:26.374Z',
+    '2021-06-25T18:49:59.371Z',
+    '2021-07-26T12:01:20.894Z',
+  ],
+  currency: 'USD',
+  locale: 'en-US',
 };
 
 const account3 = {
@@ -22,6 +48,19 @@ const account3 = {
   transactions: [200, -200, 340, -300, -20, 50, 400, -460],
   interestRate: 0.7,
   pin: 3333,
+
+  movementsDates: [
+    '2021-11-01T13:15:33.035Z',
+    '2021-11-30T09:48:16.867Z',
+    '2021-12-25T06:04:23.907Z',
+    '2021-01-25T14:18:46.235Z',
+    '2021-02-05T16:33:06.386Z',
+    '2021-04-10T14:43:26.374Z',
+    '2021-06-25T18:49:59.371Z',
+    '2021-07-26T12:01:20.894Z',
+  ],
+  currency: 'USD',
+  locale: 'en-US',
 };
 
 const account4 = {
@@ -29,6 +68,16 @@ const account4 = {
   transactions: [430, 1000, 700, 50, 90],
   interestRate: 1,
   pin: 4444,
+
+  movementsDates: [
+    '2021-11-18T21:31:17.178Z',
+    '2021-12-23T07:42:02.383Z',
+    '2021-01-28T09:15:04.904Z',
+    '2021-04-01T10:17:24.185Z',
+    '2021-05-08T14:11:59.604Z',
+  ],
+  currency: 'EUR',
+  locale: 'pt-PT', // de-DE
 };
 
 const accounts = [account1, account2, account3, account4];
@@ -41,7 +90,7 @@ const containerTransactions = document.querySelector('.transactions');
 
 //Labels:
 const labelWelcome = document.querySelector('.welcomeMessage');
-const labelDate = document.querySelector('.date');
+const labelDate = document.querySelector('.current__date');
 const labelBalance = document.querySelector('.current__balance__value');
 const labelSumIn = document.querySelector('.summary__value--in');
 const labelSumOut = document.querySelector('.summary__value--out');
@@ -68,21 +117,28 @@ const inputClosePIN = document.querySelector('.form__input--close-pin');
 //sorting transactions:
 //add a sort parameter inside our displayTransactions function w/ default value = false
 //displaying account transactions:
-const displayTransactions = (transactions, sort = false) => {
+const displayTransactions = (acc, sort = false) => {
   containerTransactions.innerHTML = '';
 
   const sortTransactions = sort
-    ? transactions.slice().sort((a, b) => a - b)
-    : transactions;
+    ? acc.transactions.slice().sort((a, b) => a - b)
+    : acc.transactions;
   //empty the <div> that contains all the transactions so we don't have to change any hard coded HTML
   sortTransactions.forEach((mov, i) => {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
+
+    const date = new Date(acc.movementsDates[i]);
+    const year = `${date.getFullYear()}`.padStart(2, '0');
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`;
+
+    const displayDate = `${month}/${day}/${year}`;
 
     const html = `<div class="transactions__row">
         <div class="transactions__type transactions__type--${type}">
         ${i + 1} - ${type}
         </div>
-        <div class="transactions__date">1 day ago</div>
+        <div class="transactions__date">${displayDate}</div>
         <div class="transactions__value">${mov < 0 ? '-' : ''} $${Math.abs(
       mov
     ).toFixed(2)}</div>
@@ -128,7 +184,7 @@ const calculateAndDisplayBalance = function (account) {
 
 //Update the UI:
 const updateUI = function (account) {
-  displayTransactions(account.transactions);
+  displayTransactions(account);
   calculateAccoutSummary(account);
   calculateAndDisplayBalance(account);
 };
@@ -157,6 +213,18 @@ btnLogin.addEventListener('click', function (e) {
   currentAccount = accounts.find(
     acc => acc.username === inputLoginUsername.value
   );
+
+  const date = new Date();
+  const year = `${date.getFullYear()}`.padStart(2, '0');
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  const day = `${date.getDate()}`;
+  const hour = `${date.getHours()}`;
+  const min = `${date.getMinutes()}`;
+
+  const displayDate = `${month}/${day}/${year} -- ${hour}:${min}`;
+
+  labelDate.textContent = `${displayDate}`;
+
   if (currentAccount?.pin === +inputLoginPIN.value) {
     labelWelcome.textContent = `Welcome back, ${
       currentAccount.owner.split(' ')[0]
@@ -188,7 +256,7 @@ btnLoan.addEventListener('click', function (e) {
     loanAmount > 0
   ) {
     currentAccount.transactions.push(loanAmount);
-
+    currentAccount.movementsDates.push(new Date().toISOString());
     updateUI(currentAccount);
   }
 
@@ -218,7 +286,9 @@ btnTransfer.addEventListener('click', function (e) {
   ) {
     //transfer funds
     currentAccount.transactions.push(-amount);
+    currentAccount.movementsDates.push(new Date().toISOString());
     accountRec.transactions.push(amount);
+    accountRec.movementsDates.push(new Date().toISOString());
     //update the UI
     updateUI(currentAccount);
   }
@@ -251,7 +321,7 @@ btnClose.addEventListener('click', function (e) {
 let sortedState = false;
 btnSort.addEventListener('click', function (e) {
   e.preventDefault();
-  displayTransactions(currentAccount.transactions, !sortedState);
+  displayTransactions(currentAccount, !sortedState);
   sortedState = !sortedState;
 
   btnSort.blur();
