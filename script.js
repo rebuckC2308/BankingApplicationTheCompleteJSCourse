@@ -10,14 +10,14 @@ const account1 = {
   pin: 1111,
 
   movementsDates: [
+    '2021-10-08T14:11:59.604Z',
+    '2021-10-17T10:17:24.185Z',
+    '2021-10-27T17:01:17.194Z',
+    '2021-10-28T09:15:04.904Z',
+    '2021-11-11T23:36:17.929Z',
+    '2021-11-12T10:51:36.790Z',
     '2021-11-18T21:31:17.178Z',
-    '2021-12-23T07:42:02.383Z',
-    '2021-01-28T09:15:04.904Z',
-    '2021-04-01T10:17:24.185Z',
-    '2021-05-08T14:11:59.604Z',
-    '2021-05-27T17:01:17.194Z',
-    '2021-07-11T23:36:17.929Z',
-    '2021-07-12T10:51:36.790Z',
+    '2021-11-19T07:42:02.383Z',
   ],
   currency: 'USD',
   locale: 'en-US',
@@ -30,14 +30,14 @@ const account2 = {
   pin: 2222,
 
   movementsDates: [
+    '2021-10-25T14:18:46.235Z',
+    '2021-10-25T18:49:59.371Z',
+    '2021-10-26T12:01:20.894Z',
+    '2021-10-30T09:48:16.867Z',
     '2021-11-01T13:15:33.035Z',
-    '2021-12-25T06:04:23.907Z',
-    '2021-11-30T09:48:16.867Z',
-    '2021-01-25T14:18:46.235Z',
-    '2021-02-05T16:33:06.386Z',
-    '2021-04-10T14:43:26.374Z',
-    '2021-06-25T18:49:59.371Z',
-    '2021-07-26T12:01:20.894Z',
+    '2021-11-05T16:33:06.386Z',
+    '2021-11-10T14:43:26.374Z',
+    '2021-11-20T06:04:23.907Z',
   ],
   currency: 'USD',
   locale: 'en-US',
@@ -50,14 +50,14 @@ const account3 = {
   pin: 3333,
 
   movementsDates: [
+    '2021-10-25T06:04:23.907Z',
+    '2021-10-25T14:18:46.235Z',
+    '2021-10-25T18:49:59.371Z',
+    '2021-10-26T12:01:20.894Z',
     '2021-11-01T13:15:33.035Z',
-    '2021-11-30T09:48:16.867Z',
-    '2021-12-25T06:04:23.907Z',
-    '2021-01-25T14:18:46.235Z',
-    '2021-02-05T16:33:06.386Z',
-    '2021-04-10T14:43:26.374Z',
-    '2021-06-25T18:49:59.371Z',
-    '2021-07-26T12:01:20.894Z',
+    '2021-11-05T16:33:06.386Z',
+    '2021-11-10T14:43:26.374Z',
+    '2021-11-20T09:48:16.867Z',
   ],
   currency: 'USD',
   locale: 'en-US',
@@ -70,11 +70,11 @@ const account4 = {
   pin: 4444,
 
   movementsDates: [
+    '2021-10-23T07:42:02.383Z',
+    '2021-10-28T09:15:04.904Z',
+    '2021-11-01T10:17:24.185Z',
+    '2021-11-08T14:11:59.604Z',
     '2021-11-18T21:31:17.178Z',
-    '2021-12-23T07:42:02.383Z',
-    '2021-01-28T09:15:04.904Z',
-    '2021-04-01T10:17:24.185Z',
-    '2021-05-08T14:11:59.604Z',
   ],
   currency: 'EUR',
   locale: 'pt-PT', // de-DE
@@ -114,6 +114,25 @@ const inputTransferAmount = document.querySelector(
 const inputCloseUsername = document.querySelector('.form__input--close-user');
 const inputClosePIN = document.querySelector('.form__input--close-pin');
 
+//Formating the transaction dates:
+const formatTransactionDate = function (date) {
+  const calcDaysPassed = (date1, date2) =>
+    Math.round(Math.abs((date1 - date2) / (1000 * 60 * 60 * 24)));
+
+  const daysPassed = calcDaysPassed(new Date(), date);
+
+  if (daysPassed === 0) return 'Today';
+  if (daysPassed === 1) return 'Yesterday';
+  if (daysPassed <= 7) return `${daysPassed} days ago`;
+  else {
+    const day = `${date.getDate()}`.padStart(2, '0');
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const year = `${date.getFullYear()}`;
+
+    return `${month}/${day}/${year}`;
+  }
+};
+
 //sorting transactions:
 //add a sort parameter inside our displayTransactions function w/ default value = false
 //displaying account transactions:
@@ -128,11 +147,8 @@ const displayTransactions = (acc, sort = false) => {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
     const date = new Date(acc.movementsDates[i]);
-    const year = `${date.getFullYear()}`.padStart(2, '0');
-    const month = `${date.getMonth() + 1}`.padStart(2, '0');
-    const day = `${date.getDate()}`;
 
-    const displayDate = `${month}/${day}/${year}`;
+    const displayDate = formatTransactionDate(date);
 
     const html = `<div class="transactions__row">
         <div class="transactions__type transactions__type--${type}">
@@ -215,13 +231,10 @@ btnLogin.addEventListener('click', function (e) {
   );
 
   const date = new Date();
-  const year = `${date.getFullYear()}`.padStart(2, '0');
-  const month = `${date.getMonth() + 1}`.padStart(2, '0');
-  const day = `${date.getDate()}`;
   const hour = `${date.getHours()}`;
   const min = `${date.getMinutes()}`;
 
-  const displayDate = `${month}/${day}/${year} -- ${hour}:${min}`;
+  const displayDate = `${formatTransactionDate(date)} -- ${hour}:${min}`;
 
   labelDate.textContent = `${displayDate}`;
 
